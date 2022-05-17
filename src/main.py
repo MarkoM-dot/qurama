@@ -1,9 +1,9 @@
 from fastapi import FastAPI
+from sqlmodel.main import SQLModel
 from .database import engine
-from . import models
 from .routers import questions, tools
 
-models.Base.metadata.create_all(bind=engine)
+SQLModel.metadata.create_all(bind=engine)
 
 app = FastAPI(debug=True)
 

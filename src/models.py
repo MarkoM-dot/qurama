@@ -1,29 +1,22 @@
-from .database import Base
-from sqlalchemy import Boolean, Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship
+from sqlmodel import SQLModel, Field
 
 
-class Question(Base):
-    __tablename__ = "questions"
+class Question(SQLModel, table=True):
 
-    id = Column(Integer, primary_key=True, index=True)
-    text = Column(String)
-    publish = Column(Boolean, default=False)
-    answers = relationship(
-        "Answer", backref="question", cascade="all,delete, delete-orphan"
-    )
+    id: int = Field(primary_key=True, index=True)
+    text: str
+    publish: bool = Field(default=False)
 
     def __repr__(self):
         return f"Question no.{self.id}: {self.text}"
 
 
-class Answer(Base):
-    __tablename__ = "answers"
+class Answer(SQLModel, table=True):
 
-    id = Column(Integer, primary_key=True, index=True)
-    text = Column(String)
-    is_correct = Column(Boolean, default=False)
-    question_id = Column(Integer, ForeignKey("questions.id"))
+    id: int = Field(primary_key=True, index=True)
+    text: str 
+    is_correct: bool = Field(default=False)
+    question_id: int = Field(foreign_key="question.id")
 
     def __repr__(self):
         return f"Answer no.{self.id}: {self.text}"
