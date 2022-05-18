@@ -6,7 +6,7 @@ client = TestClient(app)
 
 
 def test_root():
-    response = client.get("/tools")
+    response = client.get("/tools/")
 
     assert response.status_code == 200
     assert response.json() == {"message": "pong"}
@@ -35,7 +35,7 @@ def test_post_question():
             },
         ],
     }
-    response = client.post("/questions", json=data)
+    response = client.post("/questions/", json=data)
 
     assert response.status_code == 201
 
@@ -63,17 +63,9 @@ def test_too_many_correct_answers():
             },
         ],
     }
-    response = client.post("/questions", json=data)
+    response = client.post("/questions/", json=data)
 
-    message = {
-        "detail": [
-            {
-                "loc": ["body", "answers"],
-                "msg": "Please select one correct answer.",
-                "type": "assertion_error",
-            }
-        ]
-    }
+    message = "Please select exactly one correct answer."
 
     assert response.status_code == 422
-    assert response.json() == message
+    assert response.json()["detail"][0]["msg"] == message
