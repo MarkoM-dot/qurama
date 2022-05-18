@@ -1,4 +1,5 @@
 from sqlmodel import SQLModel, Field, Relationship
+from typing import List
 
 
 class Question(SQLModel, table=True):
@@ -6,7 +7,7 @@ class Question(SQLModel, table=True):
     id: int = Field(primary_key=True, index=True)
     text: str
     publish: bool = Field(default=False)
-    answers: list["Answer"] = Relationship(back_populates="question")
+    answers: List["Answer"] = Relationship(back_populates="question")
 
     def __repr__(self):
         return f"Question no.{self.id}: {self.text}"

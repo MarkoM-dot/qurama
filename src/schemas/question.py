@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, validator
+from sqlmodel import SQLModel, Field
+from pydantic import validator
 from .answer import Answer, AnswerCreate
 
 
-class QuestionBase(BaseModel):
+class QuestionBase(SQLModel):
     text: str = Field(min_length=1)
     publish: bool = False
 
@@ -25,7 +26,7 @@ class QuestionCreate(QuestionBase):
         return v
 
 
-class QuestionDelete(BaseModel):
+class QuestionDelete(SQLModel):
     pass
 
 
