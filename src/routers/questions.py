@@ -1,18 +1,19 @@
 from fastapi import HTTPException, APIRouter, Depends
-from src import managers, schemas
+from src import managers
+from src.models import Question, QuestionCreate
 from sqlalchemy.orm import Session
 from src.database import get_db
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[schemas.Question])
+@router.get("/", response_model=list[Question])
 async def get_questions(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     questions = managers.get_questions(db, skip=skip, limit=limit)
     return questions
 
 
-@router.get("/{question_id}", response_model=schemas.Question)
+@router.get("/{question_id}", response_model=Question)
 async def get_question(question_id: int, db: Session = Depends(get_db)):
     db_question = managers.get_question(db, question_id=question_id)
     if db_question is None:
@@ -23,14 +24,12 @@ async def get_question(question_id: int, db: Session = Depends(get_db)):
     return db_question
 
 
-@router.post("/", response_model=schemas.Question, status_code=201)
-async def post_question(
-    question: schemas.QuestionCreate, db: Session = Depends(get_db)
-):
+@router.post("/", response_model=Question, status_code=201)
+async def post_question(question: QuestionCreate, db: Session = Depends(get_db)):
     return managers.create_question(db=db, question=question)
 
 
-@router.delete("/{question_id}", response_model=schemas.QuestionDelete)
+@router.delete("/{question_id}")
 async def delete_question(question_id: int, db: Session = Depends(get_db)):
     db_question = managers.get_question(db, question_id=question_id)
     if db_question is None:

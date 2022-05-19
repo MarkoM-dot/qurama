@@ -1,16 +1,28 @@
-from sqlmodel import SQLModel, Field
-from pydantic import validator
+from sqlmodel import SQLModel, Field, Relationship
+from typing import Optional
 from .answer import Answer, AnswerCreate
+from pydantic import validator
 
 
 class QuestionBase(SQLModel):
-    text: str = Field(min_length=1)
-    publish: bool = False
+
+    text: str
+    publish: bool = Field(default=False)
+
+    def __repr__(self):
+        return f"Question: {self.text}"
+
+
+class Question(QuestionBase, table=True):
+
+    id: Optional[int] = Field(primary_key=True, index=True)
+    answers: list[Answer] = Relationship(back_populates="question")
 
 
 class QuestionCreate(QuestionBase):
+    
     answers: list[AnswerCreate]
-
+    
     @validator("answers")
     def check_for_four_answers(cls, v):
         assert len(v) == 4, "Please provide 4 answers."
@@ -24,15 +36,3 @@ class QuestionCreate(QuestionBase):
                 correct_count += 1
         assert correct_count == 1, "Please select exactly one correct answer."
         return v
-
-
-class QuestionDelete(SQLModel):
-    pass
-
-
-class Question(QuestionBase):
-    id: int
-    answers: list[Answer]
-
-    class Config:
-        orm_mode = True

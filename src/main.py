@@ -1,11 +1,13 @@
 from fastapi import FastAPI
-from sqlmodel.main import SQLModel
-from .database import engine
 from .routers import questions, tools
-
-SQLModel.metadata.create_all(bind=engine)
+from .database import create_db_and_tables
 
 app = FastAPI(debug=True)
 
 app.include_router(questions.router, prefix="/questions", tags=["Questions"])
 app.include_router(tools.router, prefix="/tools", tags=["Tools"])
+
+
+@app.on_event("startup")
+def on_startup():
+    create_db_and_tables()
