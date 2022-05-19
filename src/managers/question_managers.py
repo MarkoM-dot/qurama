@@ -1,7 +1,5 @@
 from sqlalchemy.orm import Session
-from src.models import Question, QuestionCreate
-
-# from sqlmodel import select
+from src.models import Answer, Question, QuestionCreate
 
 
 def get_question(db: Session, question_id: int):
@@ -14,19 +12,20 @@ def get_questions(db: Session, skip: int = 0, limit: int = 100):
 
 def create_question(db: Session, question: QuestionCreate):
     question_data = question.dict()
-    #    answers_data = question_data.pop("answers")
+    answers_data = question_data.pop("answers")
     db_question = Question(**question_data)
     db.add(db_question)
     db.commit()
     db.refresh(db_question)
-    #
-    #    question_id = db_question.id
-    #    for answer in answers_data:
-    #        answer["question_id"] = question_id
-    #        db_answer = models.Answer(**answer)
-    #        db.add(db_answer)
-    #        db.commit()
-    #        db.refresh(db_answer)
+    
+    question_id = db_question.id
+    for answer in answers_data:
+        answer["question_id"] = question_id
+        db_answer = Answer(**answer)
+        db.add(db_answer)
+        db.commit()
+        db.refresh(db_answer)
+    print(db_question)
     return db_question
 
 
