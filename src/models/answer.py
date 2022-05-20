@@ -10,6 +10,7 @@ class AnswerBase(SQLModel):
     text: str
     is_correct: bool
 
+
 class Answer(AnswerBase, table=True):
 
     id: Optional[int] = Field(primary_key=True, index=True)
@@ -19,6 +20,7 @@ class Answer(AnswerBase, table=True):
 
     def __repr__(self):
         return f"Answer no.{self.id}: {self.text}"
+
 
 class AnswerCreate(AnswerBase):
     pass

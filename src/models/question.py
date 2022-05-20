@@ -20,9 +20,9 @@ class Question(QuestionBase, table=True):
 
 
 class QuestionCreate(QuestionBase):
-    
+
     answers: list[AnswerCreate]
-    
+
     @validator("answers")
     def check_for_four_answers(cls, v):
         assert len(v) == 4, "Please provide 4 answers."

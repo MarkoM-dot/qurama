@@ -12,6 +12,8 @@ SQLAlchemy = "^1.4.36"
 sqlmodel = "^0.0.6"
 alembic = "^1.7.7"
 python-dotenv = "^0.20.0"
+aiosqlite = "^0.17.0"
+databases = {extras = ["aiosqlite"], version = "^0.5.5"}
 
 [tool.poetry.dev-dependencies]
 pytest = "^7.1.2"
