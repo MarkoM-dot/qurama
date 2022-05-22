@@ -8,7 +8,8 @@ from src.models import Answer, Question
 
 class QuestionManager(BaseModel):
 
-    async def get_question(self, db: AsyncSession, question_id: int) -> list[Question]:
+    @classmethod
+    async def get_question(cls, db: AsyncSession, question_id: int) -> list[Question]:
         query = await db.execute(
             select(Question)
             .where(Question.id == question_id)
@@ -17,7 +18,8 @@ class QuestionManager(BaseModel):
         return query.scalar()
 
 
-    async def get_questions(self, db: AsyncSession, offset: int = 0, limit: int = 100):
+    @classmethod
+    async def get_questions(cls, db: AsyncSession, offset: int = 0, limit: int = 100):
         query = await db.execute(
             select(Question)
             .offset(offset)
@@ -27,7 +29,8 @@ class QuestionManager(BaseModel):
         return query.scalars().all()
 
 
-    async def create_question(self, db: AsyncSession, question: schemas.QuestionCreate):
+    @classmethod
+    async def create_question(cls, db: AsyncSession, question: schemas.QuestionCreate):
         new_question = Question(inquiry=question.inquiry, publish=question.publish)
         db.add(new_question)
         await db.commit()

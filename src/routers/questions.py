@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src import managers
 from src.config import get_session
 from src.managers import QuestionManager
 from src.schemas import QuestionCreate, QuestionRead
