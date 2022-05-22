@@ -2,14 +2,14 @@ from functools import lru_cache
 
 import pytest
 from pydantic import BaseSettings
-from sqlmodel import Session, SQLModel, create_engine
-from sqlmodel.pool import StaticPool
+from src.database import Base
+from sqlalchemy.ext.asyncio import create_async_engine
 
 
 class TestSettings(BaseSettings):
     env_name: str = "testing"
     base_url: str = "http://localhost:8000"
-    db_url: str = "sqlite:///./test.db"
+    db_url: str = "sqlite://"
     debug: bool = True
     echo: bool = True
 
@@ -27,12 +27,11 @@ def get_test_settings():
 
 @pytest.fixture(name="Session")
 def session_fixture():
-    engine = create_engine(
+    engine = create_async_engine(
         get_test_settings().db_url,
-        connect_args={"check_same_thread": False},
-        poolclass=StaticPool,
+        future=True
     )
 
-    SQLModel.metadata.create_all(engine)
+    Base.metadata.create_all(engine)
     with Session(engine) as session:
         yield session
