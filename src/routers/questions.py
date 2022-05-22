@@ -12,13 +12,13 @@ router = APIRouter()
 async def get_questions(
     offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
 ):
-    questions = await QuestionManager.get_questions(db, offset, limit)
+    questions = await QuestionManager.get_questions(offset, limit, db)
     return questions
 
 
 @router.get("/{question_id}")
 async def get_question(question_id: int, db: AsyncSession = Depends(get_session)):
-    question = await QuestionManager.get_question(db, question_id=question_id)
+    question = await QuestionManager.get_question(question_id, db)
     if question is None:
         raise HTTPException(
             status_code=404,
@@ -37,7 +37,7 @@ async def post_question(
 
 @router.delete("/{question_id}")
 async def delete_question(question_id: int, db: AsyncSession = Depends(get_session)):
-    question = await QuestionManager.get_question(db, question_id=question_id)
+    question = await QuestionManager.get_question(question_id, db)
     if question is None:
         raise HTTPException(
             status_code=404,
