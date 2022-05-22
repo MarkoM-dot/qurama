@@ -43,8 +43,7 @@ async def delete_question(question_id: int, db: AsyncSession = Depends(get_sessi
             status_code=404,
             detail=f"Question {question_id} does not exist.",
         )
-    await db.delete(question)
-    await db.commit()
+    await QuestionManager.delete_question(question, db)
     return {"message": f"Successfully deleted Question {question_id}."}
 
 

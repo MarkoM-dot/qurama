@@ -58,3 +58,10 @@ class QuestionManager(BaseModel):
             .options(selectinload(Question.answers))
         )
         return query.scalar()
+
+    @classmethod
+    async def delete_question(
+        cls, question: Question, db: AsyncSession = Depends(get_session)
+    ):
+        await db.delete(question)
+        await db.commit()
