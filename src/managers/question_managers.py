@@ -1,16 +1,19 @@
+from fastapi import Depends
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
-from pydantic import BaseModel
-from fastapi import Depends
+
 from src import schemas
 from src.config import get_session
 from src.models import Answer, Question
 
-class QuestionManager(BaseModel):
 
+class QuestionManager(BaseModel):
     @classmethod
-    async def get_question(cls, question_id: int, db: AsyncSession = Depends(get_session)) -> list[Question]:
+    async def get_question(
+        cls, question_id: int, db: AsyncSession = Depends(get_session)
+    ) -> list[Question]:
         query = await db.execute(
             select(Question)
             .where(Question.id == question_id)
@@ -18,9 +21,10 @@ class QuestionManager(BaseModel):
         )
         return query.scalar()
 
-
     @classmethod
-    async def get_questions(cls, offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)):
+    async def get_questions(
+        cls, offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
+    ):
         query = await db.execute(
             select(Question)
             .offset(offset)
@@ -29,9 +33,10 @@ class QuestionManager(BaseModel):
         )
         return query.scalars().all()
 
-
     @classmethod
-    async def create_question(cls, question: schemas.QuestionCreate, db: AsyncSession = Depends(get_session)):
+    async def create_question(
+        cls, question: schemas.QuestionCreate, db: AsyncSession = Depends(get_session)
+    ):
         new_question = Question(inquiry=question.inquiry, publish=question.publish)
         db.add(new_question)
         await db.commit()

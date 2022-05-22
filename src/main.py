@@ -1,3 +1,5 @@
+import logging
+
 from fastapi import FastAPI
 
 from src.config import get_settings
@@ -7,15 +9,19 @@ from .routers import answers, questions, tools
 
 app = FastAPI(title="QURAMA REST API", debug=get_settings().debug)
 
+logger = logging.getLogger(__name__)
+
 
 @app.on_event("startup")
 async def startup():
+    logger.info("Initializing database...")
     await init_db()
     await database.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown():
+    logger.info("Shutting down...")
     await database.disconnect()
 
 
