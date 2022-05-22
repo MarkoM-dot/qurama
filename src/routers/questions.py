@@ -2,7 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src import managers
-from src.database import get_session
+from src.config import get_session
+from src.managers import QuestionManager
 from src.schemas import QuestionCreate, QuestionRead
 
 router = APIRouter()
@@ -12,13 +13,13 @@ router = APIRouter()
 async def get_questions(
     offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
 ):
-    questions = await managers.get_questions(db, offset, limit)
+    questions = await QuestionManager.get_questions(db, offset, limit)
     return questions
 
 
 @router.get("/{question_id}")
 async def get_question(question_id: int, db: AsyncSession = Depends(get_session)):
-    question = await managers.get_question(db, question_id=question_id)
+    question = await QuestionManager.get_question(db, question_id=question_id)
     if question is None:
         raise HTTPException(
             status_code=404,
@@ -31,13 +32,13 @@ async def get_question(question_id: int, db: AsyncSession = Depends(get_session)
 async def post_question(
     question: QuestionCreate, db: AsyncSession = Depends(get_session)
 ):
-    question = await managers.create_question(db=db, question=question)
+    question = await QuestionManager.create_question(db=db, question=question)
     return question
 
 
 @router.delete("/{question_id}")
 async def delete_question(question_id: int, db: AsyncSession = Depends(get_session)):
-    question = await managers.get_question(db, question_id=question_id)
+    question = await QuestionManager.get_question(db, question_id=question_id)
     if question is None:
         raise HTTPException(
             status_code=404,

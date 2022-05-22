@@ -1,27 +1,30 @@
-from typing import AsyncGenerator
 from asyncio import get_event_loop
 from functools import lru_cache
-from httpx import AsyncClient
-from src.config import TestSettings
-from src.main import app
+from typing import AsyncGenerator
+import logging
+
 import pytest
-from src.database import Base
+from httpx import AsyncClient
 from sqlalchemy.ext.asyncio import create_async_engine
 
+from src.config import TestSettings
+from src.database import Base
+from src.main import app
 
+
+logger = logging.getLogger(__name__)
 
 @lru_cache
 def get_test_settings():
     settings = TestSettings()
-    print(f"Loading settings for: {settings.env_name}")
+    logger.info(f"Loading settings for: {settings.env_name}")
 
     return settings
 
 
-
-#@pytest.mark.skip("later bring in in-mem db")
-#@pytest.fixture
-#def get_app():
+# @pytest.mark.skip("later bring in in-mem db")
+# @pytest.fixture
+# def get_app():
 #    engine = create_async_engine(
 #    get_test_settings().db_url,
 #    future=True,
@@ -31,6 +34,7 @@ def get_test_settings():
 #    Base.metadata.create_all(engine)
 #
 #    return app
+
 
 @pytest.fixture
 async def client() -> AsyncGenerator:

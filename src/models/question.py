@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 
-from src.database import Base
+from src.config import Base
 
 
 class Question(Base):

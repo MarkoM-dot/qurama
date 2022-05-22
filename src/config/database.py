@@ -7,7 +7,7 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-from src.config import get_settings
+from .config import get_settings
 
 logger = logging.getLogger(__name__)
 database = databases.Database(get_settings().db_url)
@@ -21,6 +21,7 @@ Base = declarative_base()
 
 async def init_db():
     async with engine.begin() as conn:
+        logger.debug("Revving the engine...")
         await conn.run_sync(Base.metadata.create_all)
 
 
