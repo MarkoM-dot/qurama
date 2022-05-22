@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     base_url: str = "http://localhost:8000"
     db_url: str = "sqlite:///./minify.db"
     debug: bool = True
+    echo: bool = True
 
     class Config:
         env_file = ".env"

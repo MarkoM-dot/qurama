@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from src.config import get_settings
-from .routers import questions, tools
+from .routers import questions, answers, tools
 from .database import database, init_db
 
 app = FastAPI(title="QURAMA REST API", debug=get_settings().debug)
@@ -19,4 +19,5 @@ async def shutdown():
 
 
 app.include_router(questions.router, prefix="/questions", tags=["Questions"])
+app.include_router(answers.router, prefix="/answers", tags=["Answers"])
 app.include_router(tools.router, prefix="/tools", tags=["Tools"])

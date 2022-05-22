@@ -1,5 +1,5 @@
-from .answer import Answer
-from .question import Question, QuestionCreate
+from .answer import Answer, AnswerWithQuestion
+from .question import Question, QuestionCreate, QuestionRead, QuestionWithAnswers
 
 
-__all__ = ["Answer", "Question", "QuestionCreate"]
+__all__ = ["Answer", "AnswerWithQuestion", "Question", "QuestionCreate", "QuestionRead", "QuestionWithAnswers"]
