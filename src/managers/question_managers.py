@@ -1,35 +1,52 @@
-from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.models import Answer, Question, QuestionCreate
+from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
+
+from src import schemas
+from src.models import Answer, Question
 
 
-async def get_question(db: AsyncSession, question_id: int):
-    q = await db.get(Question, question_id)
-    return q
+async def get_question(db: AsyncSession, question_id: int) -> list[Question]:
+    query = await db.execute(
+        select(Question)
+        .where(Question.id == question_id)
+        .options(selectinload(Question.answers))
+    )
+    return query.scalar()
 
 
 async def get_questions(db: AsyncSession, offset: int = 0, limit: int = 100):
-    query = await db.execute(select(Question).offset(offset).limit(limit))
+    query = await db.execute(
+        select(Question)
+        .offset(offset)
+        .limit(limit)
+        .options(selectinload(Question.answers))
+    )
     return query.scalars().all()
 
 
-async def create_question(db: AsyncSession, question: QuestionCreate):
-    db_question = question.dict()
-    db_answers = db_question.pop("answers")
-    db_question = Question(**db_question)
-
-    db.add(db_question)
+async def create_question(db: AsyncSession, question: schemas.QuestionCreate):
+    print(question.inquiry)
+    new_question = Question(inquiry=question.inquiry, publish=question.publish)
+    db.add(new_question)
     await db.commit()
-    await db.refresh(db_question)
+    await db.refresh(new_question)
 
-    for answer in db_answers:
-        answer["question_id"] = db_question.id
-        db_answer = Answer(**answer)
-
-        db.add(db_answer)
+    print(question.answers)
+    for answer in question.answers:
+        new_answer = Answer(
+            retort=answer.retort,
+            is_correct=answer.is_correct,
+            question_id=new_question.id,
+        )
+        db.add(new_answer)
         await db.commit()
-        await db.refresh(db_answer)
-    print("db question: ", db_question)
+        await db.refresh(new_answer)
+        print(new_answer)
 
-    return db_question
-
+    query = await db.execute(
+        select(Question)
+        .where(Question.id == new_question.id)
+        .options(selectinload(Question.answers))
+    )
+    return query.scalar()

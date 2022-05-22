@@ -9,7 +9,6 @@ python = "^3.10"
 uvicorn = "^0.17.6"
 fastapi = "^0.77.1"
 SQLAlchemy = "^1.4.35"
-sqlmodel = "^0.0.6"
 alembic = "^1.7.7"
 python-dotenv = "^0.20.0"
 aiosqlite = "^0.17.0"
@@ -21,6 +20,7 @@ mypy = "^0.950"
 black = "^22.3.0"
 flake8 = "^4.0.1"
 requests = "^2.27.1"
+isort = "^5.10.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -1,13 +1,14 @@
-from fastapi import HTTPException, APIRouter, Depends
-from src import managers
-from src.models import QuestionCreate, Question, QuestionWithAnswers
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from src import managers
 from src.database import get_session
+from src.schemas import QuestionCreate, QuestionRead
 
 router = APIRouter()
 
 
-@router.get("/", response_model=list[Question])
+@router.get("/")
 async def get_questions(
     offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
 ):
@@ -15,7 +16,7 @@ async def get_questions(
     return questions
 
 
-@router.get("/{question_id}", response_model=Question)
+@router.get("/{question_id}")
 async def get_question(question_id: int, db: AsyncSession = Depends(get_session)):
     question = await managers.get_question(db, question_id=question_id)
     if question is None:
@@ -26,11 +27,12 @@ async def get_question(question_id: int, db: AsyncSession = Depends(get_session)
     return question
 
 
-@router.post("/", response_model=QuestionWithAnswers, status_code=201)
+@router.post("/", status_code=201)
 async def post_question(
     question: QuestionCreate, db: AsyncSession = Depends(get_session)
 ):
-    return await managers.create_question(db=db, question=question)
+    question = await managers.create_question(db=db, question=question)
+    return question
 
 
 @router.delete("/{question_id}")

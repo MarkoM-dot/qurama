@@ -1,13 +1,13 @@
+import logging
+
+import databases
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import SQLAlchemyError
-import databases
-from sqlmodel import SQLModel
-from src.config import get_settings
-import logging
 
+from src.config import get_settings
 
 logger = logging.getLogger(__name__)
 database = databases.Database(get_settings().db_url)
@@ -21,7 +21,7 @@ Base = declarative_base()
 
 async def init_db():
     async with engine.begin() as conn:
-        await conn.run_sync(SQLModel.metadata.create_all)
+        await conn.run_sync(Base.metadata.create_all)
 
 
 async def get_session():

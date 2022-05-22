@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 
 from src.config import get_settings
-from .routers import questions, answers, tools
+
 from .database import database, init_db
+from .routers import answers, questions, tools
 
 app = FastAPI(title="QURAMA REST API", debug=get_settings().debug)
 
