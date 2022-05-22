@@ -10,13 +10,17 @@ class Settings(BaseSettings):
     debug: bool = True
     echo: bool = True
 
+class DevSettings(Settings):
     class Config:
         env_file = ".env"
 
+class TestSettings(Settings):
+    class Config:
+        env_file = ".env.test"
 
 @lru_cache
 def get_settings():
-    settings = Settings()
+    settings = DevSettings()
     print(f"Loading settings for: {settings.env_name}")
 
     return settings
