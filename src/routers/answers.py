@@ -9,13 +9,13 @@ from src.schemas import AnswerRead
 router = APIRouter()
 
 
-@router.get("/", response_model=list[AnswerRead])
+@router.get("/")
 async def get_answers(db: AsyncSession = Depends(get_session)):
     query = await db.execute(select(Answer))
     return query.all()
 
 
-@router.get("/{answer_id}", response_model=AnswerRead)
+@router.get("/{answer_id}")
 async def get_answer(answer_id: int, db: AsyncSession = Depends(get_session)):
     query = await db.get(Answer, answer_id)
     if query is None:
