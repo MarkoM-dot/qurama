@@ -1,5 +1,5 @@
 # Qurama
-
+![Custom](https://img.shields.io/badge/Blazingly-FastAPI-orange)
 ### Getting started
 ```shell
 poetry shell
