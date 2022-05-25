@@ -21,7 +21,7 @@ Base = declarative_base()
 
 async def init_db():
     async with engine.begin() as conn:
-        logger.debug("Revving the engine...")
+        logger.info("Revving the engine...")
         await conn.run_sync(Base.metadata.create_all)
 
 
