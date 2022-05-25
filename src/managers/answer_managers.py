@@ -13,7 +13,7 @@ class AnswerManager(BaseModel):
         cls, answer_id: int, db: AsyncSession = Depends(get_session)
     ) -> Answer:
         query: Answer = await db.get(Answer, answer_id)
-        return query.scalar()
+        return query
 
     @classmethod
     async def get_answers(
