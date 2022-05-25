@@ -11,8 +11,8 @@ router = APIRouter()
 
 
 @router.get("/")
-async def get_answers(db: AsyncSession = Depends(get_session)) -> list[Answer]:
-    answers: list[Answer] = await AnswerManager.get_answers(db)
+async def get_answers(offset: int, limit: int, db: AsyncSession = Depends(get_session)) -> list[Answer]:
+    answers: list[Answer] = await AnswerManager.get_answers(offset, limit, db)
     return answers
 
 
