@@ -1,4 +1,5 @@
 import logging
+from typing import AsyncGenerator
 
 import databases
 from sqlalchemy.exc import SQLAlchemyError
@@ -19,13 +20,13 @@ engine = create_async_engine(
 Base = declarative_base()
 
 
-async def init_db():
+async def init_db() -> None:
     async with engine.begin() as conn:
         logger.info("Revving the engine...")
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def get_session():
+async def get_session() -> AsyncGenerator:
     async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
     async with async_session() as session:
         try:

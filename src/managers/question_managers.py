@@ -13,8 +13,8 @@ class QuestionManager(BaseModel):
     @classmethod
     async def get_question(
         cls, question_id: int, db: AsyncSession = Depends(get_session)
-    ) -> list[Question]:
-        query = await db.execute(
+    ) -> Question:
+        query: Question = await db.execute(
             select(Question)
             .where(Question.id == question_id)
             .options(selectinload(Question.answers))
@@ -24,8 +24,8 @@ class QuestionManager(BaseModel):
     @classmethod
     async def get_questions(
         cls, offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
-    ):
-        query = await db.execute(
+    ) -> list[Question]:
+        query: Question = await db.execute(
             select(Question)
             .offset(offset)
             .limit(limit)
@@ -36,14 +36,14 @@ class QuestionManager(BaseModel):
     @classmethod
     async def create_question(
         cls, question: schemas.QuestionCreate, db: AsyncSession = Depends(get_session)
-    ):
-        new_question = Question(inquiry=question.inquiry, publish=question.publish)
+    ) -> Question:
+        new_question: Question = Question(inquiry=question.inquiry, publish=question.publish)
         db.add(new_question)
         await db.commit()
         await db.refresh(new_question)
 
         for answer in question.answers:
-            new_answer = Answer(
+            new_answer: Answer = Answer(
                 retort=answer.retort,
                 is_correct=answer.is_correct,
                 question_id=new_question.id,
@@ -52,7 +52,7 @@ class QuestionManager(BaseModel):
             await db.commit()
             await db.refresh(new_answer)
 
-        query = await db.execute(
+        query: Question = await db.execute(
             select(Question)
             .where(Question.id == new_question.id)
             .options(selectinload(Question.answers))
@@ -62,6 +62,6 @@ class QuestionManager(BaseModel):
     @classmethod
     async def delete_question(
         cls, question: Question, db: AsyncSession = Depends(get_session)
-    ):
+    ) -> None:
         await db.delete(question)
         await db.commit()

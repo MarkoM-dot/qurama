@@ -11,14 +11,14 @@ router = APIRouter()
 
 
 @router.get("/")
-async def get_answers(db: AsyncSession = Depends(get_session)):
-    query = await db.execute(select(Answer))
+async def get_answers(db: AsyncSession = Depends(get_session)) -> list[Answer]:
+    query: Answer = await db.execute(select(Answer))
     return query.all()
 
 
 @router.get("/{answer_id}")
-async def get_answer(answer_id: int, db: AsyncSession = Depends(get_session)):
-    answer = await AnswerManager.get_answer(answer_id, db)
+async def get_answer(answer_id: int, db: AsyncSession = Depends(get_session)) -> Answer:
+    answer: Answer = await AnswerManager.get_answer(answer_id, db)
     if answer is None:
         raise HTTPException(status_code=404, detail=f"Answer no.{answer_id} not found.")
     return answer

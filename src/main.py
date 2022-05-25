@@ -13,14 +13,14 @@ logger = logging.getLogger(__name__)
 
 
 @app.on_event("startup")
-async def startup():
+async def startup() -> None:
     logger.info("Initializing database...")
     await init_db()
     await database.connect()
 
 
 @app.on_event("shutdown")
-async def shutdown():
+async def shutdown() -> None:
     logger.info("Shutting down...")
     await database.disconnect()
 
