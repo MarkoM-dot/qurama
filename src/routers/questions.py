@@ -9,7 +9,7 @@ from src.schemas import QuestionCreate, QuestionRead
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/", response_model=list[QuestionRead])
 async def get_questions(
     offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
 ) -> list[Question]:
@@ -17,7 +17,7 @@ async def get_questions(
     return questions
 
 
-@router.get("/{question_id}")
+@router.get("/{question_id}", response_model=QuestionRead)
 async def get_question(
     question_id: int, db: AsyncSession = Depends(get_session)
 ) -> Question:
@@ -30,7 +30,7 @@ async def get_question(
     return question
 
 
-@router.post("/", status_code=201)
+@router.post("/", response_model=QuestionRead, status_code=201)
 async def post_question(
     question: QuestionCreate, db: AsyncSession = Depends(get_session)
 ) -> Question:
