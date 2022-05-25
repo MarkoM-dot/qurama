@@ -8,8 +8,8 @@ class Question(Base):
     __tablename__ = "questions"
 
     id = Column(Integer, primary_key=True)
-    inquiry = Column(String)
-    publish = Column(Boolean, default=False)
+    inquiry = Column(String, index=True)
+    publish = Column(Boolean, default=False, index=True)
 
     answers = relationship("Answer", back_populates="question", cascade="all, delete")
 

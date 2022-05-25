@@ -8,7 +8,7 @@ class Answer(Base):
     __tablename__ = "answers"
 
     id = Column(Integer, primary_key=True, index=True)
-    retort = Column(String)
+    retort = Column(String, index=True)
     is_correct = Column(Boolean, default=False)
 
     question_id = Column(Integer, ForeignKey("questions.id"))
