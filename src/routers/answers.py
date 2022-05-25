@@ -10,7 +10,9 @@ router = APIRouter()
 
 
 @router.get("/", response_model=list[AnswerRead])
-async def get_answers(offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)) -> list[Answer]:
+async def get_answers(
+    offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
+) -> list[Answer]:
     answers: list[Answer] = await AnswerManager.get_answers(offset, limit, db)
     return answers
 
