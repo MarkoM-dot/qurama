@@ -15,7 +15,7 @@ async def get_answers(offset: int = 0, limit: int = 100, db: AsyncSession = Depe
     return answers
 
 
-@router.get("/{answer_id}")
+@router.get("/{answer_id}", response_model=AnswerRead)
 async def get_answer(answer_id: int, db: AsyncSession = Depends(get_session)) -> Answer:
     answer: Answer = await AnswerManager.get_answer(answer_id, db)
     if answer is None:
