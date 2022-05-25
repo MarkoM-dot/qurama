@@ -15,3 +15,6 @@ class Question(Base):
 
     def __repr__(self):
         return f"Question: {self.inquiry}"
+
+    def __str__(self):
+        return f"{self.id}: {self.inquiry}"

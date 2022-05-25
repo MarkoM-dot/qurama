@@ -37,7 +37,9 @@ class QuestionManager(BaseModel):
     async def create_question(
         cls, question: schemas.QuestionCreate, db: AsyncSession = Depends(get_session)
     ) -> Question:
-        new_question: Question = Question(inquiry=question.inquiry, publish=question.publish)
+        new_question: Question = Question(
+            inquiry=question.inquiry, publish=question.publish
+        )
         db.add(new_question)
         await db.commit()
         await db.refresh(new_question)

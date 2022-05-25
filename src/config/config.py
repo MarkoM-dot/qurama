@@ -25,7 +25,7 @@ class TestSettings(Settings):
 
 
 @lru_cache
-def get_settings():
+def get_settings() -> DevSettings:
     settings = DevSettings()
     logger.info(f"Loading settings for: {settings.env_name}")
 

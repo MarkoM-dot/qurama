@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 
 @lru_cache
-def get_test_settings():
+def get_test_settings() -> TestSettings:
     settings = TestSettings()
     logger.info(f"Loading settings for: {settings.env_name}")
 
