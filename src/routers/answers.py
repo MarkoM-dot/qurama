@@ -12,8 +12,8 @@ router = APIRouter()
 
 @router.get("/")
 async def get_answers(db: AsyncSession = Depends(get_session)) -> list[Answer]:
-    query: Answer = await db.execute(select(Answer))
-    return query.all()
+    answers: list[Answer] = await AnswerManager.get_answers(db)
+    return answers
 
 
 @router.get("/{answer_id}")
