@@ -1,6 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
 
 from src.config import get_session
 from src.managers import AnswerManager
@@ -10,7 +9,7 @@ from src.schemas import AnswerRead
 router = APIRouter()
 
 
-@router.get("/")
+@router.get("/", response_model=list[AnswerRead])
 async def get_answers(offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)) -> list[Answer]:
     answers: list[Answer] = await AnswerManager.get_answers(offset, limit, db)
     return answers
