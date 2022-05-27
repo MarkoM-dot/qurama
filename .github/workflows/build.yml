@@ -30,7 +30,7 @@ jobs:
         run: poetry install --no-interaction --no-root
       - name: Install library
         run: poetry install --no-interaction
-      - name: Start server and run tests
+      - name: Run tests
         run: |
           source .venv/bin/activate
           pytest tests/
