@@ -34,3 +34,7 @@ jobs:
         run: |
           source .venv/bin/activate
           pytest tests/
+      - name: Check code coverage
+        run: |
+          source .venv/bin/activate
+          pytest --cov=src tests/
