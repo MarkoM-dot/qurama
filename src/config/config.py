@@ -9,7 +9,7 @@ logger = logging.getLogger(__name__)
 class Settings(BaseSettings):
     env_name: str = "local"
     base_url: str = "http://localhost:8000"
-    db_url: str = "sqlite:///./db.db"
+    db_url: str = "sqlite+aiosqlite:///./db.db"
     debug: bool = True
     echo: bool = True
 
