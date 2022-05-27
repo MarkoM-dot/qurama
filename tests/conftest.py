@@ -1,14 +1,11 @@
 import logging
-from asyncio import get_event_loop
 from functools import lru_cache
 from typing import AsyncGenerator
 
 import pytest
 from httpx import AsyncClient
-from sqlalchemy.ext.asyncio import create_async_engine
 
 from src.config import TestSettings
-from src.database import Base
 from src.main import app
 
 logger = logging.getLogger(__name__)
