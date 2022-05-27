@@ -7,6 +7,7 @@
 
 ### API features
 - [x] Update schemas and add them to routes :+1:
+- [ ] Implement more endpoints
 - [ ] Services module
 
 ### User Authentication & Authorization
@@ -15,4 +16,4 @@
 ### Testing
 - [x] In-memory async db for testing
 - [ ] Destroy test db
-- [ ] Cover endpoints all current endpoints(Implement code-cov to help)
+- [ ] Cover all current endpoints(Increase Code Coverage)
