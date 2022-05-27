@@ -13,20 +13,20 @@ from .config import get_settings
 logger = logging.getLogger(__name__)
 database = databases.Database(get_settings().db_url)
 
-engine = create_async_engine(
-    get_settings().db_url, future=True, echo=get_settings().echo
-)
+engine = create_async_engine(get_settings().db_url, future=True, echo=get_settings().echo)
 
 Base = declarative_base()
 
 
 async def init_db() -> None:
+    """Create models upon initiating DB."""
     async with engine.begin() as conn:
         logger.info("Revving the engine...")
         await conn.run_sync(Base.metadata.create_all)
 
 
 async def get_session() -> AsyncGenerator:
+    """Generate an async session for dependency injection."""
     async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
     async with async_session() as session:
         try:

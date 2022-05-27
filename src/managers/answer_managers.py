@@ -9,9 +9,7 @@ from src.models import Answer
 
 class AnswerManager(BaseModel):
     @classmethod
-    async def get_answer(
-        cls, answer_id: int, db: AsyncSession = Depends(get_session)
-    ) -> Answer:
+    async def get_answer(cls, answer_id: int, db: AsyncSession = Depends(get_session)) -> Answer:
         query: Answer = await db.get(Answer, answer_id)
         return query
 

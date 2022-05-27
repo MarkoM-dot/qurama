@@ -13,14 +13,14 @@ router = APIRouter()
 async def get_questions(
     offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
 ) -> list[Question]:
+    """Return all questions from DB."""
     questions: list[Question] = await QuestionManager.get_questions(offset, limit, db)
     return questions
 
 
 @router.get("/{question_id}", response_model=QuestionRead)
-async def get_question(
-    question_id: int, db: AsyncSession = Depends(get_session)
-) -> Question:
+async def get_question(question_id: int, db: AsyncSession = Depends(get_session)) -> Question:
+    """Return a particular question from DB given an id."""
     question: Question = await QuestionManager.get_question(question_id, db)
     if question is None:
         raise HTTPException(
@@ -34,9 +34,8 @@ async def get_question(
 async def post_question(
     question: QuestionCreate, db: AsyncSession = Depends(get_session)
 ) -> Question:
-    created_question: Question = await QuestionManager.create_question(
-        db=db, question=question
-    )
+    """Create a question in DB and return said question."""
+    created_question: Question = await QuestionManager.create_question(db=db, question=question)
     return created_question
 
 
@@ -44,6 +43,7 @@ async def post_question(
 async def delete_question(
     question_id: int, db: AsyncSession = Depends(get_session)
 ) -> dict[str, str]:
+    """Delete a particular question given an id."""
     question = await QuestionManager.get_question(question_id, db)
     if question is None:
         raise HTTPException(

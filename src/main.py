@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 @app.on_event("startup")
 async def startup() -> None:
+    """Initialize DB and connect to it with an async driver."""
     logger.info("Initializing database...")
     await init_db()
     await database.connect()
@@ -21,6 +22,7 @@ async def startup() -> None:
 
 @app.on_event("shutdown")
 async def shutdown() -> None:
+    """Disconnect when shutting down."""
     logger.info("Shutting down...")
     await database.disconnect()
 

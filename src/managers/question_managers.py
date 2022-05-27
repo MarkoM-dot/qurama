@@ -26,10 +26,7 @@ class QuestionManager(BaseModel):
         cls, offset: int = 0, limit: int = 100, db: AsyncSession = Depends(get_session)
     ) -> list[Question]:
         query: Question = await db.execute(
-            select(Question)
-            .offset(offset)
-            .limit(limit)
-            .options(selectinload(Question.answers))
+            select(Question).offset(offset).limit(limit).options(selectinload(Question.answers))
         )
         return query.scalars().all()
 
@@ -37,9 +34,7 @@ class QuestionManager(BaseModel):
     async def create_question(
         cls, question: schemas.QuestionCreate, db: AsyncSession = Depends(get_session)
     ) -> Question:
-        new_question: Question = Question(
-            inquiry=question.inquiry, publish=question.publish
-        )
+        new_question: Question = Question(inquiry=question.inquiry, publish=question.publish)
         db.add(new_question)
         await db.commit()
         await db.refresh(new_question)
