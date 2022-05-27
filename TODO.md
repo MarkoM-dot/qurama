@@ -2,6 +2,7 @@
 
 ### Code Maintenance
 - [x] Add pydocstyle docstrings and documentation
+- [ ] Implement project-wide Logger
 
 ### API features
 - [x] Update schemas and add them to routes :+1:
