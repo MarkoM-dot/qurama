@@ -1,8 +1,8 @@
-import pytest
 import httpx
-
+import pytest
 
 Response = httpx._models.Response
+
 
 @pytest.mark.asyncio
 async def test_get_questions(client):
@@ -10,14 +10,16 @@ async def test_get_questions(client):
 
     assert response.status_code == 200
 
+
 @pytest.mark.asyncio
 async def test_get_question(client):
-    
+
     question_id: int = 1
 
     response: Response = await client.get(f"/questions/{question_id}")
 
     assert response.status_code == 404
+
 
 @pytest.mark.asyncio
 async def test_malformed_get_question(client):

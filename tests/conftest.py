@@ -4,8 +4,12 @@ from typing import AsyncGenerator
 
 import pytest
 from httpx import AsyncClient
+from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.ext.asyncio import create_async_engine
+from sqlalchemy.ext.asyncio.session import AsyncSession
+from sqlalchemy.orm import sessionmaker
 
-from src.config import TestSettings
+from src.config import Base, TestSettings, get_session
 from src.main import app
 
 logger = logging.getLogger(__name__)
@@ -19,18 +23,25 @@ def get_test_settings() -> TestSettings:
     return settings
 
 
-# @pytest.mark.skip("later bring in in-mem db")
-# @pytest.fixture
-# def get_app():
-#    engine = create_async_engine(
-#    get_test_settings().db_url,
-#    future=True,
-#    echo=get_test_settings().echo
-#    )
-#
-#    Base.metadata.create_all(engine)
-#
-#    return app
+engine = create_async_engine(
+    get_test_settings().db_url, future=True, echo=get_test_settings().echo
+)
+
+
+async def override_get_session() -> AsyncGenerator:
+    async with engine.begin() as conn:
+        logger.info("Revving the engine...")
+        await conn.run_sync(Base.metadata.create_all)
+
+    async_session = sessionmaker(engine, expire_on_commit=False, class_=AsyncSession)
+    async with async_session() as session:
+        try:
+            yield session
+        except SQLAlchemyError as err:
+            logger.exception(err)
+
+
+app.dependency_overrides[get_session] = override_get_session
 
 
 @pytest.fixture
