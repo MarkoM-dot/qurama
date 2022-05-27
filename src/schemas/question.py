@@ -1,5 +1,3 @@
-from typing import List
-
 from pydantic import BaseModel, validator
 
 from .answer import AnswerCreate, AnswerRead
@@ -11,7 +9,7 @@ class QuestionBase(BaseModel):
 
 
 class QuestionCreate(QuestionBase):
-    answers: List[AnswerCreate]
+    answers: list[AnswerCreate]
 
     @validator("answers", check_fields=False)
     def check_for_four_answers(cls, v):
@@ -47,7 +45,7 @@ class QuestionDelete(BaseModel):
 
 class QuestionRead(QuestionBase):
     id: int
-    answers: List[AnswerRead]
+    answers: list[AnswerRead]
 
     class Config:
         orm_mode = True
