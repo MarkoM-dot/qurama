@@ -1,7 +1,7 @@
 # TODO
 
 ### Code Maintenance
-- [ ] Add pydocstyle docstrings and documentation
+- [x] Add pydocstyle docstrings and documentation
 
 ### API features
 - [x] Update schemas and add them to routes :+1:
