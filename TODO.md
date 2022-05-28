@@ -16,4 +16,5 @@
 ### Testing
 - [x] In-memory async db for testing
 - [ ] Destroy test db
-- [ ] Cover all current endpoints(Increase Code Coverage)
+- [ ] Cover all current endpoints(pytest-cov)
+- [ ] Add benchmarking to code (pytest-benchmark)
