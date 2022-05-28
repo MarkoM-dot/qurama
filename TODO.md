@@ -18,4 +18,4 @@
 - [ ] Destroy test db
 - [ ] Cover all current endpoints(pytest-cov)
 - [ ] Add benchmarking to code (pytest-benchmark)
-- [ ] Test for security flaws in app (bandit)
+- [x] Test for security flaws in app (bandit)
