@@ -52,8 +52,3 @@ async def delete_question(
         )
     await QuestionManager.delete_question(question, db)
     return {"message": f"Successfully deleted Question {question_id}."}
-
-
-# @router.put("/questions/{question_id}")
-# async def update_question(question_id: int, response_model=schemas.Question, status_code=200)
-#    return {"status": "Successfully updated question."}
