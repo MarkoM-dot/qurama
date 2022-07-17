@@ -18,10 +18,7 @@ class QuestionCreate(QuestionBase):
 
     @validator("answers", check_fields=False)
     def check_one_correct_answer(cls, v):
-        correct_count = 0
-        for answer in v:
-            if answer.is_correct:
-                correct_count += 1
+        correct_count = sum(1 for answer in v if answer.is_correct)
         assert correct_count == 1, "Please select exactly one correct answer."
         return v
 
