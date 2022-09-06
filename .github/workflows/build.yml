@@ -33,7 +33,7 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          pytest tests/
+          pytest tests/ --durations=5
       - name: Check code coverage
         run: |
           source .venv/bin/activate
