@@ -3,12 +3,11 @@ import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from src.config import get_settings
+from src import __app_name__, __version__
+from src.config import database, get_settings, init_db
+from src.routers import answers, questions, tools
 
-from .config import database, init_db
-from .routers import answers, questions, tools
-
-app = FastAPI(title="QURAMA REST API", debug=get_settings().debug)
+app = FastAPI(title=__app_name__, debug=get_settings().debug, version=__version__)
 
 logger = logging.getLogger(__name__)
 

@@ -10,7 +10,11 @@ repos:
     hooks:
       - id: flake8
         additional_dependencies: [flake8-docstrings]
-        args: [--statistics]
+        args: 
+          - --statistics
+          - --max-line-length=100 
+          - --max-complexity=18 
+          - --ignore=D100,D104
   - repo: https://github.com/pycqa/isort
     rev: 5.10.1
     hooks:
